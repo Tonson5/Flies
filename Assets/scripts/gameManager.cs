@@ -33,5 +33,12 @@ public class gameManager : MonoBehaviour
     public void Lose()
     {
         SceneManager.LoadScene(lose);
+        StartCoroutine(Restart());
+    }
+
+    IEnumerator Restart()
+    {
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(levels[currentLevel]);
     }
 }

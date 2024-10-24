@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Button
   - Goal
+  - Enemy
   layers:
   - Default
   - TransparentFX
