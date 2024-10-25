@@ -8,7 +8,7 @@ public class AmmoUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        uIHolder = GameObject.Find("Ammo UI holder");
+        //uIHolder = GameObject.Find("Ammo UI holder");
     }
 
     // Update is called once per frame

@@ -11,6 +11,10 @@ public class playerMovement : MonoBehaviour
     private bool touchingButton;
     public GameObject button;
     public GameObject gM;
+    public AudioSource footsteps;
+    public bool canStep;
+    public AudioClip step;
+    public GameObject interactionIndicator;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -20,7 +24,20 @@ public class playerMovement : MonoBehaviour
     
     void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (touchingButton)
+        {
+            interactionIndicator.SetActive(true);
+        }
+        else
+        {
+            interactionIndicator.SetActive(false);
+        }
+
+        if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && canStep)
+        {
+            StartCoroutine(Footsteps());
+        }
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane plane = new Plane(Vector3.up, Vector3.zero);
         float distance;
 
@@ -45,6 +62,7 @@ public class playerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             Destroy(button);
+            touchingButton = false;
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -53,6 +71,21 @@ public class playerMovement : MonoBehaviour
         {
             gM.GetComponent<gameManager>().IncreaseLevel();
         }
+    }
+    IEnumerator Footsteps()
+    {
+        canStep = false;
+        footsteps.pitch = Random.Range(0.7f, 1.3f);
+        footsteps.PlayOneShot(step);
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            yield return new WaitForSeconds(Random.Range(0.3f, 0.4f));
+        }
+        else
+        {
+            yield return new WaitForSeconds(Random.Range(0.8f, 1));
+        }
+        canStep = true;
     }
     private void FixedUpdate()
     {
