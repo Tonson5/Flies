@@ -15,6 +15,7 @@ public class playerMovement : MonoBehaviour
     public bool canStep;
     public AudioClip step;
     public GameObject interactionIndicator;
+    public Animator myAnim;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -24,6 +25,26 @@ public class playerMovement : MonoBehaviour
     
     void Update()
     {
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        {
+            myAnim.SetBool("walking", true);
+        }
+        else
+        {
+            myAnim.SetBool("walking", false);
+        }
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            myAnim.SetBool("shift held", true);
+        }
+        else
+        {
+            myAnim.SetBool("shift held", false);
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            myAnim.SetTrigger("shoot");
+        }
         if (touchingButton)
         {
             interactionIndicator.SetActive(true);
@@ -83,7 +104,7 @@ public class playerMovement : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(Random.Range(0.8f, 1));
+            yield return new WaitForSeconds(Random.Range(0.4f, 0.5f));
         }
         canStep = true;
     }
