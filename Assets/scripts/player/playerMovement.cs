@@ -16,6 +16,7 @@ public class playerMovement : MonoBehaviour
     public AudioClip step;
     public GameObject interactionIndicator;
     public Animator myAnim;
+    public Animator myLegs;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -28,18 +29,24 @@ public class playerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             myAnim.SetBool("walking", true);
+            myLegs.SetBool("walking", true);
         }
         else
         {
             myAnim.SetBool("walking", false);
+            myLegs.SetBool("walking", false);
+
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
             myAnim.SetBool("shift held", true);
+            myLegs.SetBool("shift held", true);
         }
         else
         {
             myAnim.SetBool("shift held", false);
+            myLegs.SetBool("shift held", false);
+
         }
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -110,8 +117,7 @@ public class playerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        rb.AddForce(Vector3.forward * moveSpeed * Input.GetAxisRaw("Vertical"));
-        rb.AddForce(Vector3.right * moveSpeed * Input.GetAxisRaw("Horizontal"));
+        rb.AddForce((Vector3.forward * Input.GetAxisRaw("Vertical") + Vector3.right * Input.GetAxisRaw("Horizontal")).normalized * moveSpeed);
     }
     private void OnTriggerStay(Collider other)
     {
